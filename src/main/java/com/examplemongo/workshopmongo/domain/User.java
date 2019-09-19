@@ -2,10 +2,15 @@ package com.examplemongo.workshopmongo.domain;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection="user") //informa que a classe User corresponde a uma coleção do MongoDB (no caso a coleção user). como é o mesmo nome não precisaria colocar o nome collection, pois ele procura a classe em nome minusculo
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id //em cima do atributo que é a chave.
 	private String id;
 	private String name;
 	private String email;
