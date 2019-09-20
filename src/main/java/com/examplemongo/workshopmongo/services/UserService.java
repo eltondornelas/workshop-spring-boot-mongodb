@@ -33,9 +33,16 @@ public class UserService {
 		return repo.insert(obj);
 	}
 	
+	public void delete(String id) {
+		findById(id); //para fazer a busca primeiro e caso não existe ele já gera a exceção.
+		repo.deleteById(id);
+	}
+	
 	//Pega um DTO e instancia um usuário é o contrário do "UserDTO". 
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
 	}
+	
+	
 	
 }

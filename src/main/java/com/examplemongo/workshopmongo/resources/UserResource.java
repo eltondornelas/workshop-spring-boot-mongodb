@@ -64,6 +64,12 @@ public class UserResource {
 		//created retorna o códito http quando cria um novo recurso
 	}
 	
-	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE) 
+	public ResponseEntity<Void> delete(@PathVariable String id) { //para casar com o id da URL
+
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+		//código 204 é um retorno de nada.
+	}
 	
 }
