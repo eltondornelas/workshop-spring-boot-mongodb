@@ -1,8 +1,11 @@
 package com.examplemongo.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="user") //informa que a classe User corresponde a uma coleção do MongoDB (no caso a coleção user). como é o mesmo nome não precisaria colocar o nome collection, pois ele procura a classe em nome minusculo
@@ -14,6 +17,11 @@ public class User implements Serializable {
 	private String id;
 	private String name;
 	private String email;
+
+	@DBRef(lazy = true) //para informar que é uma referência. o lazy=true é para que só acesse os posts se explicitamente acessados, pois pode causar um transferência de dados pesada se for apenas uma consulta de usuário
+	private List<Post> posts = new ArrayList<>();
+	//vamos colocar os posts do usuário apenas referenciados e não aninhados
+	//ao iniciar uma associação e é uma coleção, é interessante iniciar logo
 	
 	public User() {
 		
@@ -48,6 +56,14 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
