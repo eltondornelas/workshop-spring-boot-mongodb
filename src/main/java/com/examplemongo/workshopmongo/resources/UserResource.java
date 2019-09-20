@@ -1,14 +1,17 @@
 package com.examplemongo.workshopmongo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.examplemongo.workshopmongo.domain.User;
 import com.examplemongo.workshopmongo.dto.UserDTO;
@@ -45,6 +48,22 @@ public class UserResource {
 		User obj = service.findById(id);
 		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
+	
+	@RequestMapping(method=RequestMethod.POST) //poderia ser @PostMapping 
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto) { //para casar com o id da URL
+		User obj = service.fromDTO(objDto);
+		//converte DTO para User
+
+		obj = service.insert(obj);
+		//Retornar uma resposta vazia porém com um cabeçalho com o URI do novo recurso criado
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		//pega o endereço do no objeto que inseriu
+		
+		return ResponseEntity.created(uri).build();
+		//created retorna o códito http quando cria um novo recurso
+	}
+	
 	
 	
 }
