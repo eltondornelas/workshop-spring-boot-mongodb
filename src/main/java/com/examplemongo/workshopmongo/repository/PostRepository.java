@@ -3,12 +3,17 @@ package com.examplemongo.workshopmongo.repository;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.examplemongo.workshopmongo.domain.Post;
 
 @Repository
 public interface PostRepository extends MongoRepository<Post, String> {
+	
+	//@Query("{ <field>: { $regex: /pattern/, $options: '<options>' } }")
+	@Query("{ 'title': { $regex: ?0, $options: 'i' } }") //?0 por ser o primeiro parâmetro que vem no método, se quisesse o segundo parâmetro seria o ?1
+	List<Post> searchTitle(String text); //nesse pode colocar o nome que quiser já que será personalizado 
 	
 	List<Post> findByTitleContainingIgnoreCase(String text);
 	//só com essa declaração já faz com que o Spring data monte a consulta
